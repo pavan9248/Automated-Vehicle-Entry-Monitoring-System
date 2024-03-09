@@ -9,4 +9,4 @@ python-multipart
 tensorflow
 requests
 easyocr
-
+psycopg2

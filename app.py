@@ -12,6 +12,18 @@ import subprocess
 import shutil
 from fastapi.responses import RedirectResponse
 import easyocr
+import psycopg2
+
+
+conn = psycopg2.connect(
+    dbname=os.getenv("POSTGRES_DB"),
+    user=os.getenv("POSTGRES_USER"),
+    password=os.getenv("POSTGRES_PASSWORD"),
+    host="postgres",
+    port=os.getenv("DATABASE_PORT")
+)
+
+
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -37,6 +49,19 @@ def login(request: Request):
 @app.get('/sign')
 def sign(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request})
+
+@app.post("/sign")
+async def signup(
+    request: Request, username: str = Form(...), email: str = Form(...),password: str = Form(...),licence:str = Form(...) 
+):
+   
+    cur = conn.cursor()
+    cur.execute("INSERT INTO userdb (name,email,password,licence) VALUES (%s, %s,%s, %s)", (username,email,password,licence))
+    conn.commit()
+    cur.close() 
+ 
+    return RedirectResponse("/", status_code=303)
+
 
 
 @app.post("/login")
