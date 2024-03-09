@@ -16,11 +16,11 @@ import psycopg2
 
 
 conn = psycopg2.connect(
-    dbname=os.getenv("POSTGRES_DB"),
-    user=os.getenv("POSTGRES_USER"),
-    password=os.getenv("POSTGRES_PASSWORD"),
-    host="postgres",
-    port=os.getenv("DATABASE_PORT")
+    dbname="sampledb",
+    user="app",
+    password="pOud4unh16k5Xp9b1HE754U2",
+    host="absolutely-verified-stag.a1.pgedge.io",
+    port="5432"
 )
 
 
